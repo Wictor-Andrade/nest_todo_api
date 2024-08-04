@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Query, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, Patch, Delete } from '@nestjs/common';
 import { TasksPrismaRepository } from 'src/repositories/TasksPrismaRepository';
 import { Task } from 'src/entities/Task';
 import { CreateTaskDTO } from 'src/dtos/entities.Task.createTaskDTO';
@@ -58,6 +58,12 @@ export class AppControllerTasks {
   }
 
   //DELETE
+  @Delete("/:id")
+  async deleteTask(
+    @Param('id') id: string,
+  ) {
+    return this.prisma.delete(id);
+  }
 
   //PATCH
   @Patch("/:id")
