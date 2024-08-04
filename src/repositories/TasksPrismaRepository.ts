@@ -62,7 +62,8 @@ export class TasksPrismaRepository extends PrismaClient implements OnModuleInit,
     }
 
     async createDay(data: { date: Date }): Promise<Day> {
-        const formattedDate = new Date(data.date.setHours(0, 0, 0, 0)); // Define a hora como 00:00:00
+
+        const formattedDate = new Date(data.date.setHours(0, 0, 0, 0));
         return this.day.create({
             data: {
                 date: formattedDate,

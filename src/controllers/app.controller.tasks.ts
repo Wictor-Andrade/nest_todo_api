@@ -1,6 +1,9 @@
 import { Controller, Get, Post, Param, Query, Body } from '@nestjs/common';
 import { TasksPrismaRepository } from 'src/repositories/TasksPrismaRepository';
 import { Task } from 'src/entities/Task';
+import { CreateTaskDTO } from 'src/dtos/entities.Task.createTaskDTO';
+import { IsUUID } from 'class-validator';
+import { randomUUID } from 'crypto';
 
 
 @Controller('tasks')
@@ -8,6 +11,8 @@ export class AppControllerTasks {
   constructor(
     private readonly prisma: TasksPrismaRepository
   ) { }
+
+  //GET AREA
 
   @Get()
   async getAllTasks() {
@@ -36,4 +41,22 @@ export class AppControllerTasks {
     const day = await this.prisma.findDayByDate(date);
     return day ? day.id : null;
   }
+
+  //POST AREA
+
+  @Post()
+  async createTasks(@Body() body: CreateTaskDTO) {
+    const dayId = await this.getDayIdByDate(body.day)
+
+
+    return this.prisma.create({
+      id: randomUUID(),
+      description: body.description,
+      completed: false,
+      dayId: dayId ? dayId : (await this.prisma.createDay({ date: new Date(body.day) })).id
+
+    })
+  }
+
+
 }

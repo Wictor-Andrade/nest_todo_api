@@ -14,4 +14,6 @@ export class AppControllerDays {
     return this.prisma.findAllDays()
   }
 
+  
+
 }
