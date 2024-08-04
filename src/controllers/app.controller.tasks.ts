@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Param, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, Patch } from '@nestjs/common';
 import { TasksPrismaRepository } from 'src/repositories/TasksPrismaRepository';
 import { Task } from 'src/entities/Task';
 import { CreateTaskDTO } from 'src/dtos/entities.Task.createTaskDTO';
-import { IsUUID } from 'class-validator';
+import { UpdateTaskDTO } from 'src/dtos/entities.Task.updateTaskDTO';
 import { randomUUID } from 'crypto';
 
 
@@ -54,9 +54,17 @@ export class AppControllerTasks {
       description: body.description,
       completed: false,
       dayId: dayId ? dayId : (await this.prisma.createDay({ date: new Date(body.day) })).id
-
     })
   }
 
+  //DELETE
 
+  //PATCH
+  @Patch("/:id")
+  async updateTask(
+    @Param('id') id: string,
+    @Body() updateTaskDTO: UpdateTaskDTO
+  ) {
+    return this.prisma.update(id, updateTaskDTO);
+  }
 }

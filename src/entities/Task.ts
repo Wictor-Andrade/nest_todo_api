@@ -1,8 +1,8 @@
 import { Day } from '../entities/Day';
 
-export interface Task {
+export class Task {
     id: string;
-    description?: string;
+    description: string;
     completed: boolean;
     dayId: string;
     day?: Day;
