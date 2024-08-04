@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, Delete } from '@nestjs/common';
 import { TasksPrismaRepository } from 'src/repositories/TasksPrismaRepository';
 import { Task } from 'src/entities/Task';
 
@@ -9,11 +9,19 @@ export class AppControllerDays {
     private readonly prisma: TasksPrismaRepository
   ) { }
 
+  // get area
   @Get()
-  async getAllTasks() {
+  async getAllDays() {
     return this.prisma.findAllDays()
   }
 
-  
+  //delete area
+
+  @Delete("/:id")
+  async deleteDay(
+    @Param('id') id: string,
+  ) {
+    return this.prisma.deleteDay(id);
+  }
 
 }

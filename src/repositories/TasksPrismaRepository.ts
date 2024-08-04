@@ -12,8 +12,8 @@ export class TasksPrismaRepository extends PrismaClient implements OnModuleInit,
     async findAll(): Promise<Task[]> {
         return this.task.findMany();
     }
-    async findAllByDay(dayId: string): Promise<Task[]> {
-        return this.task.findMany({ where: { dayId: dayId } })
+    async findAllByDay(id: string): Promise<Task[]> {
+        return this.task.findMany({ where: { dayId: id } })
     }
 
     async findOne(id: string): Promise<Task | null> {
@@ -72,6 +72,10 @@ export class TasksPrismaRepository extends PrismaClient implements OnModuleInit,
     }
 
     async deleteDay(id: string): Promise<Day> {
+        const tasks = await this.findAllByDay(id)
+        for (const task of tasks) {
+            await this.delete(task.id)
+        }
         return this.day.delete({ where: { id } });
     }
 }
